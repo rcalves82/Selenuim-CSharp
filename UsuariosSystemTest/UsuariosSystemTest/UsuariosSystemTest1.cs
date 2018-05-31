@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -10,13 +11,22 @@ namespace UsuariosSystemTest
     public class UsuariosSystemTest1
     {
         private IWebDriver driver;
+        private bool acceptNextAlert;
+
         //private pages.UsuarioPage usuario;
-        
+
         //public void abreNavegador()
         //{
         //    driver = new PhantomJSDriver();
         //    usuario = new pages.UsuarioPage(driver);
         //}
+
+        public static void InitializeClass()
+        {
+            IWebDriver driver;
+            driver = new PhantomJSDriver();
+            driver.Navigate().GoToUrl("http://localhost:8080/apenas-teste/limpa");
+        }
 
         public void URL()
         {
@@ -26,7 +36,7 @@ namespace UsuariosSystemTest
             driver.Manage().Window.Maximize();
         }
         [TestMethod]
-       
+
         public void DeveCadastrarUsuario()
         {
             //usuario.Visita();
@@ -93,11 +103,14 @@ namespace UsuariosSystemTest
 
         public void excluirCadastro()
         {
-            URL();
+            driver = new PhantomJSDriver();
+            driver.Navigate().GoToUrl("http://localhost:8080/usuarios");
+
+            //driver.FindElement(By.XPath("//button[@type='submit']")).Click();
+            //Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Tem certeza[\\s\\S]$"));
 
             int posicao = 1; // queremos o 1o botao da pagina
-            driver.FindElements(By.TagName("button"))[posicao - 1].Click();
-
+            driver.FindElements(By.XPath("button"))[posicao - 1].Click();
             IAlert alert = driver.SwitchTo().Alert();
             alert.Accept();
 
@@ -125,6 +138,27 @@ namespace UsuariosSystemTest
 
             driver.Quit();
 
+        }
+        private string CloseAlertAndGetItsText()
+        {
+            try
+            {
+                IAlert alert = driver.SwitchTo().Alert();
+                string alertText = alert.Text;
+                if (acceptNextAlert)
+                {
+                    alert.Accept();
+                }
+                else
+                {
+                    alert.Dismiss();
+                }
+                return alertText;
+            }
+            finally
+            {
+                acceptNextAlert = true;
+            }
         }
     }
 }

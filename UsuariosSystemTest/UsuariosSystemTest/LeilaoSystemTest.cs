@@ -14,7 +14,7 @@ namespace UsuariosSystemTest
     public class LeilaoSystemTest
     {
         private IWebDriver driver;
-        
+
         public void URL()
         {
             driver = new PhantomJSDriver();
@@ -40,8 +40,8 @@ namespace UsuariosSystemTest
             //usado.Click();
             btnSalvar.Click();
 
-            bool achouNomeLeilao = driver.PageSource.Contains("Secador");
-            bool achouValorLeiao = driver.PageSource.Contains("250");
+            bool achouNomeLeilao = driver.PageSource.Contains("Samsung Galax S9");
+            bool achouValorLeiao = driver.PageSource.Contains("2500");
 
             Assert.IsTrue(achouNomeLeilao);
             Assert.IsTrue(achouValorLeiao);
